@@ -1,38 +1,44 @@
+// src/components/AddRecipeForm.jsx
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useRecipeStore from "./recipeStore";
 
-const AddRecipeForm = () => {
-  const addRecipe = useRecipeStore((state) => state.addRecipe);
+export default function AddRecipeForm() {
+  const addRecipe = useRecipeStore((s) => s.addRecipe);
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim()) return;
-    addRecipe({ id: Date.now(), title, description });
+    const newRecipe = { id: Date.now(), title: title.trim(), description: description.trim() };
+    addRecipe(newRecipe);
     setTitle("");
     setDescription("");
+    // Navigate to the new recipe details
+    navigate(`/recipe/${newRecipe.id}`);
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
-      <h2>Add New Recipe</h2>
+    <form onSubmit={handleSubmit} style={{ padding: 20 }}>
+      <h2>Add Recipe</h2>
       <input
         type="text"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
         placeholder="Title"
-        style={{ display: "block", marginBottom: "10px", padding: "8px" }}
+        onChange={(e) => setTitle(e.target.value)}
+        style={{ display: "block", width: "100%", padding: 8, marginBottom: 8 }}
+        required
       />
       <textarea
         value={description}
-        onChange={(e) => setDescription(e.target.value)}
         placeholder="Description"
-        style={{ display: "block", marginBottom: "10px", padding: "8px" }}
+        onChange={(e) => setDescription(e.target.value)}
+        style={{ display: "block", width: "100%", padding: 8, marginBottom: 8 }}
       />
       <button type="submit">Add Recipe</button>
     </form>
   );
-};
-
-export default AddRecipeForm;
+}
