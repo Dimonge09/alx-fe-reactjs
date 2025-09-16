@@ -1,4 +1,3 @@
-// src/components/AddRecipeForm.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useRecipeStore from "./recipeStore";
@@ -13,11 +12,14 @@ export default function AddRecipeForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!title.trim()) return;
-    const newRecipe = { id: Date.now(), title: title.trim(), description: description.trim() };
+    const newRecipe = {
+      id: Date.now(),
+      title: title.trim(),
+      description: description.trim(),
+    };
     addRecipe(newRecipe);
     setTitle("");
     setDescription("");
-    // Navigate to the new recipe details
     navigate(`/recipe/${newRecipe.id}`);
   };
 

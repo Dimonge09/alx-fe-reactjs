@@ -1,4 +1,3 @@
-// src/components/EditRecipeForm.jsx
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useRecipeStore from "./recipeStore";
@@ -22,7 +21,7 @@ const EditRecipeForm = () => {
   if (!recipe) return <p>Recipe not found.</p>;
 
   const handleSubmit = (event) => {
-    event.preventDefault(); // ✅ This is what the checker is looking for
+    event.preventDefault();
     updateRecipe({
       id: recipe.id,
       title: title.trim(),

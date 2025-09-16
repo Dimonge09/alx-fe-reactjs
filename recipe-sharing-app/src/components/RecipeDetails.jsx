@@ -1,4 +1,3 @@
-// src/components/RecipeDetails.jsx
 import { Link, useParams, useNavigate } from "react-router-dom";
 import useRecipeStore from "./recipeStore";
 
@@ -20,7 +19,9 @@ const RecipeDetails = () => {
       <h1>{recipe.title}</h1>
       <p>{recipe.description}</p>
       <Link to={`/edit/${recipe.id}`}>Edit</Link>
-      <button onClick={handleDelete}>Delete</button>
+      <button onClick={handleDelete} style={{ marginLeft: "10px" }}>
+        Delete
+      </button>
     </div>
   );
 };

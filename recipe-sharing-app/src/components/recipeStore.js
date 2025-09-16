@@ -1,28 +1,29 @@
-// src/components/recipeStore.js
 import { create } from "zustand";
 
 const useRecipeStore = create((set) => ({
-  recipes: [],
-  searchTerm: "", // 🔍 NEW - store search input
-
-  addRecipe: (recipe) =>
+  recipes: [
+    { id: 1, title: "Spaghetti Bolognese", description: "A classic Italian pasta dish." },
+    { id: 2, title: "Chicken Curry", description: "Spicy and creamy chicken curry." },
+    { id: 3, title: "Vegetable Stir Fry", description: "Quick and healthy stir fry." },
+  ],
+  searchTerm: "",
+  filteredRecipes: [],
+  setSearchTerm: (term) =>
+    set((state) => {
+      const filtered = state.recipes.filter((recipe) =>
+        recipe.title.toLowerCase().includes(term.toLowerCase())
+      );
+      return { searchTerm: term, filteredRecipes: filtered };
+    }),
+  favorites: [],
+  addFavorite: (recipeId) =>
     set((state) => ({
-      recipes: [...state.recipes, { ...recipe, id: Date.now() }],
+      favorites: [...state.favorites, recipeId],
     })),
-
-  updateRecipe: (updatedRecipe) =>
+  removeFavorite: (recipeId) =>
     set((state) => ({
-      recipes: state.recipes.map((recipe) =>
-        recipe.id === updatedRecipe.id ? updatedRecipe : recipe
-      ),
+      favorites: state.favorites.filter((id) => id !== recipeId),
     })),
-
-  deleteRecipe: (id) =>
-    set((state) => ({
-      recipes: state.recipes.filter((recipe) => recipe.id !== id),
-    })),
-
-  setSearchTerm: (term) => set(() => ({ searchTerm: term })), // 🔍 NEW setter
 }));
 
 export default useRecipeStore;
