@@ -1,0 +1,4 @@
+/* lightweight styles */
+body { margin: 0; background:#f7f7f8; color:#111; }
+a { color:#0366d6; text-decoration: none; }
+input, button, textarea { font-family: inherit; }
