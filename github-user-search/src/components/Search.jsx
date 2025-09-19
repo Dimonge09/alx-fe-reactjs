@@ -1,53 +1,65 @@
+// src/components/Search.jsx
 import React, { useState } from "react";
 import fetchUserData from "../services/githubService";
 
 export default function Search({ setUsers }) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [username, setUsername] = useState("");
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSearch = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!searchTerm.trim()) return;
+    if (!username.trim()) return;
 
     setLoading(true);
     setError("");
+    setUser(null);
+
     try {
-      const user = await fetchUserData(searchTerm);
-      setUsers([user]); // we pass array so UserList or parent can map
+      const data = await fetchUserData(username);
+      setUser(data);
+      setUsers && setUsers([data]); // optional: update parent state if needed
     } catch (err) {
-      console.error(err);
       setError("Looks like we cant find the user");
-      setUsers([]); // clear results if error
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="p-4">
+    <div className="search-container" style={{ textAlign: "center" }}>
       {/* Search Form */}
-      <form onSubmit={handleSearch} className="flex gap-2 mb-4">
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search GitHub username..."
-          className="border rounded-lg p-2 flex-1"
+          placeholder="Enter GitHub username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{ padding: "8px", marginRight: "8px" }}
         />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-        >
+        <button type="submit" style={{ padding: "8px 12px" }}>
           Search
         </button>
       </form>
 
-      {/* Loading State */}
-      {loading && <p className="text-gray-500">Loading...</p>}
-
-      {/* Error Message */}
-      {error && <p className="text-red-500">{error}</p>}
+      {/* Conditional Rendering */}
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {user && (
+        <div style={{ marginTop: "16px" }}>
+          <img
+            src={user.avatar_url}
+            alt={user.login}
+            width="100"
+            style={{ borderRadius: "50%" }}
+          />
+          <h3>{user.login}</h3>
+          <a href={user.html_url} target="_blank" rel="noreferrer">
+            View Profile
+          </a>
+        </div>
+      )}
     </div>
   );
 }
