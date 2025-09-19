@@ -1,18 +1,23 @@
-// src/App.jsx
 import React, { useState } from "react";
-import SearchBar from "./components/SearchBar";
-import UserList from "./components/UserList";
+import Search from "./components/Search";
 
 export default function App() {
-  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState(null);
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-4">
-        GitHub User Search
-      </h1>
-      <SearchBar setUsers={setUsers} />
-      <UserList users={users} />
+    <div>
+      <h1>GitHub User Search</h1>
+      <Search setUser={setUser} />
+
+      {user && (
+        <div>
+          <img src={user.avatar_url} alt={user.login} width={100} />
+          <h2>{user.login}</h2>
+          <a href={user.html_url} target="_blank" rel="noreferrer">
+            View Profile
+          </a>
+        </div>
+      )}
     </div>
   );
 }
