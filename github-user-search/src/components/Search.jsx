@@ -13,41 +13,41 @@ export default function Search({ setUsers }) {
     setLoading(true);
     setError("");
     try {
-      const data = await fetchUserData(searchTerm);
-      if (data.message === "Not Found") {
-        setError("Looks like we cant find the user");
-        setUsers(null);
-      } else {
-        setUsers(data);
-      }
+      const user = await fetchUserData(searchTerm);
+      setUsers([user]); // we pass array so UserList or parent can map
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      console.error(err);
+      setError("Looks like we cant find the user");
+      setUsers([]); // clear results if error
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="search-container">
-      {/* Search Input */}
-      <form onSubmit={handleSearch} style={{ marginBottom: "1rem" }}>
+    <div className="p-4">
+      {/* Search Form */}
+      <form onSubmit={handleSearch} className="flex gap-2 mb-4">
         <input
           type="text"
-          placeholder="Search GitHub username..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ padding: "8px", width: "250px" }}
+          placeholder="Search GitHub username..."
+          className="border rounded-lg p-2 flex-1"
         />
-        <button type="submit" style={{ marginLeft: "8px", padding: "8px" }}>
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+        >
           Search
         </button>
       </form>
 
       {/* Loading State */}
-      {loading && <p>Loading...</p>}
+      {loading && <p className="text-gray-500">Loading...</p>}
 
-      {/* Error State */}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {/* Error Message */}
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }
