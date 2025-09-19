@@ -1,4 +1,3 @@
-// src/components/Search.jsx
 import React, { useState } from "react";
 import fetchUserData from "../services/githubService";
 
@@ -19,7 +18,7 @@ export default function Search({ setUsers }) {
     try {
       const data = await fetchUserData(username);
       setUser(data);
-      setUsers && setUsers([data]); // optional: update parent state if needed
+      setUsers && setUsers([data]); 
     } catch (err) {
       setError("Looks like we cant find the user");
     } finally {
@@ -28,32 +27,23 @@ export default function Search({ setUsers }) {
   };
 
   return (
-    <div className="search-container" style={{ textAlign: "center" }}>
-      {/* Search Form */}
+    <div style={{ textAlign: "center" }}>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Enter GitHub username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          style={{ padding: "8px", marginRight: "8px" }}
         />
-        <button type="submit" style={{ padding: "8px 12px" }}>
-          Search
-        </button>
+        <button type="submit">Search</button>
       </form>
 
-      {/* Conditional Rendering */}
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
+
       {user && (
-        <div style={{ marginTop: "16px" }}>
-          <img
-            src={user.avatar_url}
-            alt={user.login}
-            width="100"
-            style={{ borderRadius: "50%" }}
-          />
+        <div>
+          <img src={user.avatar_url} alt={user.login} width="100" />
           <h3>{user.login}</h3>
           <a href={user.html_url} target="_blank" rel="noreferrer">
             View Profile
