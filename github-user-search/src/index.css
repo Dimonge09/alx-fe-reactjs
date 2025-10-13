@@ -1,4 +1,7 @@
-/* lightweight styles */
-body { margin: 0; background:#f7f7f8; color:#111; }
-a { color:#0366d6; text-decoration: none; }
-input, button, textarea { font-family: inherit; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-100 text-gray-900;
+}
